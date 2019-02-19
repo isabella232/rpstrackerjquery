@@ -31,5 +31,5 @@ document.body.appendChild(component());
 $(() => {
     $('#inDate').kendoDatePicker();
     console.log('loaded2');
-    window.location.href = '/backlog/backlog.html';
+    //window.location.href = '/backlog/backlog.html';
 });
