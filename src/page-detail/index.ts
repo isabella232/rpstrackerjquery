@@ -1,21 +1,24 @@
-//import 'kendo-ui-core/css/web/kendo.common.css';
-//import 'kendo-ui-core/css/web/kendo.default.min.css';
-import './backlog.css';
-
 import $ from "jquery";
 import "bootstrap/dist/js/bootstrap";
 
 import { PtItem } from "../core/models/domain";
 import { ItemType } from "../core/constants";
 import { getIndicatorClass } from "../shared/helpers/priority-styling";
-import { BacklogPage } from './backlog.page';
 import { PresetType, PtItemType } from '../core/models/domain/types';
 import { pushUrl, getQueryParameter } from '../utils/url';
 import { PtNewItem } from '../shared/models/dto/pt-new-item';
+import { DetailScreenType } from "../shared/models/ui/types/detail-screens";
+import { DetailPage } from "./detail.page";
 
-const reqPreset = getQueryParameter('preset') as PresetType;
-const backlogPage = new BacklogPage(reqPreset);
+const reqScreen = getQueryParameter('screen') as DetailScreenType;
+const detailPage = new DetailPage(reqScreen);
 
+const detailsTemplate = $('#detailsTemplate').html();
+
+const x = detailsTemplate.replace(/{{title}}/ig, detailPage.detalsForm.title);
+$('#detailScreenContainer').append(x);
+
+/*
 backlogPage.items$.subscribe(items => {
     $('#itemsTableBody').html(renderTableRows(items));
 });
@@ -48,14 +51,6 @@ function renderTableRow(item: PtItem): string {
     `;
 }
 
-/*
-function refreshBacklogPage() {
-    backlogPage.refresh()
-        .then(items => {
-            $('#itemsTableBody').html(renderTableRows(items));
-        });
-}
-*/
 
 $('.btn-backlog-filter').click((e) => {
     const selPreset = $(e.currentTarget).attr('data-preset') as PresetType;
@@ -82,4 +77,4 @@ $(document).on("click", "#itemsTableBody tr", (e) => {
 });
 
 backlogPage.refresh();
-
+*/

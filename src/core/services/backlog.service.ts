@@ -1,19 +1,14 @@
-
-
-import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
-import { getUserAvatarUrl } from '../core/helpers';
-import { CONFIG } from '../config';
-import { Store } from '../core/state/app-store';
-import { PresetType } from '../core/models/domain/types';
-import { PtItem, PtUser, PtTask, PtComment } from '../core/models/domain';
-import { datesForPtItem, datesForTask } from '../core/helpers/date-utils';
-import { PriorityEnum, StatusEnum } from '../core/models/domain/enums';
-import { PtNewItem } from '../shared/models/dto/pt-new-item';
-import { PtNewTask } from '../shared/models/dto/pt-new-task';
-import { PtNewComment } from '../shared/models/dto/pt-new-comment';
+import { getUserAvatarUrl } from '../../core/helpers';
+import { CONFIG } from '../../config';
+import { Store } from '../../core/state/app-store';
+import { PresetType } from '../../core/models/domain/types';
+import { PtItem, PtUser, PtTask, PtComment } from '../../core/models/domain';
+import { datesForPtItem, datesForTask } from '../../core/helpers/date-utils';
+import { PriorityEnum, StatusEnum } from '../../core/models/domain/enums';
+import { PtNewItem } from '../../shared/models/dto/pt-new-item';
+import { PtNewTask } from '../../shared/models/dto/pt-new-task';
+import { PtNewComment } from '../../shared/models/dto/pt-new-comment';
 import { BacklogRepository } from './backlog.repository';
-
 
 
 export const tempCurrentUser = {
@@ -27,7 +22,6 @@ export const tempCurrentUser = {
 
 export class BacklogService {
 
-
     private get currentPreset() {
         return this.store.value.selectedPreset;
     }
@@ -39,7 +33,6 @@ export class BacklogService {
             return undefined;
         }
     }
-
 
     constructor(
         private repo: BacklogRepository,
@@ -61,21 +54,6 @@ export class BacklogService {
             });
     }
 
-    /*
-    public getItemFromCacheOrServer(id: number) {
-        // const selectedItem = _.find(this.store.value.backlogItems, i => i.id === id);
-        const selectedItem = this.store.value.backlogItems.find(i => i.id === id);
-        if (selectedItem) {
-
-            this.store.set('currentSelectedItem', selectedItem);
-
-        } else {
-            this.getPtItem(id);
-        }
-    }
-*/
-
-
     public getPtItem(id: number): Promise<PtItem> {
         return this.repo.getPtItem(id)
             .then((ptItem: PtItem) => {
@@ -86,7 +64,6 @@ export class BacklogService {
                 return ptItem;
             });
     }
-
 
     public addNewPtItem(newItem: PtNewItem, assignee: PtUser): Promise<PtItem> {
         const item: PtItem = {
@@ -115,26 +92,9 @@ export class BacklogService {
         });
     }
 
-
     public updatePtItem(item: PtItem): Promise<PtItem> {
         return this.repo.updatePtItem(item);
     }
-
-    /*
-
-    public deletePtItem(item: PtItem) {
-        this.repo.deletePtItem(item.id,
-            () => {
-
-                const updatedItems = this.store.value.backlogItems.filter((i) => {
-                    return i.id !== item.id;
-                });
-                this.store.set('backlogItems', updatedItems);
-
-            }
-        );
-    }
-*/
 
     public addNewPtTask(newTask: PtNewTask, currentItem: PtItem): Promise<PtTask> {
         const task: PtTask = {
@@ -157,7 +117,6 @@ export class BacklogService {
                 );
         });
     }
-
 
     public updatePtTask(currentItem: PtItem, task: PtTask, toggle: boolean, newTitle?: string): Promise<PtTask> {
         const taskToUpdate: PtTask = {
@@ -226,5 +185,4 @@ export class BacklogService {
     private setUserAvatar(user: PtUser) {
         user.avatar = getUserAvatarUrl(CONFIG.apiEndpoint, user.id);
     }
-
 }

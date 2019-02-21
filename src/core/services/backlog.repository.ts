@@ -1,6 +1,6 @@
-import { PtTask, PtItem, PtComment } from '../core/models/domain';
-import { CONFIG } from '../config';
-import { PresetType } from '../core/models/domain/types';
+import { PtTask, PtItem, PtComment } from '../models/domain';
+import { CONFIG } from '../../config';
+import { PresetType } from '../models/domain/types';
 
 
 export class BacklogRepository {

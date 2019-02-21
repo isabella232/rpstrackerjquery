@@ -20,8 +20,8 @@
             <img src="/assets/img/rpslogo.png" class="logo">
         </a>
         <nav class="my-2 my-md-0 mr-md-3">
-            <a class="p-2 text-light" href="/dashboard/dashboard.html">Dashboard</a>
-            <a class="p-2 text-light" href="/backlog/backlog.html">Backlog</a>
+            <a class="p-2 text-light" href="/page-dashboard/dashboard.html">Dashboard</a>
+            <a class="p-2 text-light" href="/page-backlog/backlog.html">Backlog</a>
         </nav>
     </div>
 
@@ -181,23 +181,39 @@
 
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
 
+                <div>
+                    <div
+                        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+                        <h1 class="h2">{item.title}</h1>
+                        <div class="btn-toolbar mb-2 mb-md-0">
+                            <div class="btn-group mr-2">
+                                <button type="button">Details</button>
 
-                <button id="btnMy">say it</button>
+                                <button type="button">Tasks</button>
+
+                                <button type="button">Chitchat</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="detailScreenContainer"></div>
+
+                </div>
+
 
             </main>
         </div>
     </div>
 
-    <script>
-
-
-        $(() => {
-            $('#btnMy').click(() => {
-                const b = new Boo();
-                b.sayHello();
-            });
-        });
+    <script id="detailsTemplate" type="text/template">
+        <div class="tutorial">
+            <h1 class="tutorial-heading">{{title}}<h1>
+        </div>
     </script>
+
+
+    <script src="/vendor.bundle.js"></script>
+    <script src="/detail.bundle.js"></script>
 </body>
 
 </html>

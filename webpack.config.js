@@ -7,7 +7,8 @@ module.exports = {
     mode: 'development',
     entry: {
         index: './src/index.ts',
-        backlog: './src/backlog/index.ts'
+        backlog: './src/page-backlog/index.ts',
+        detail: './src/page-detail/index.ts'
     },
     devServer: {
         contentBase: path.join(__dirname, 'dist'),
@@ -45,12 +46,12 @@ module.exports = {
     },
     plugins: [
         new CopyWebpackPlugin([
-            { from: 'src/backlog/**', to: 'backlog/', flatten: true },
+            { from: 'src/page-backlog/**', to: 'page-backlog/', flatten: true },
         ],
             { ignore: ['**/*.js', '**/*.css', '**/*.ts'] }
         ),
         new CopyWebpackPlugin([
-            { from: 'src/detail/**', to: 'detail/', flatten: true },
+            { from: 'src/page-detail/**', to: 'page-detail/', flatten: true },
         ],
             { ignore: ['**/*.js', '**/*.css', '**/*.ts'] }
         ),

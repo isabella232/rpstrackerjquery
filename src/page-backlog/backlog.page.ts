@@ -1,6 +1,6 @@
 import { Store } from "../core/state/app-store";
-import { BacklogRepository } from "./backlog.repository";
-import { BacklogService } from "./backlog.service";
+import { BacklogRepository } from "../core/services/backlog.repository";
+import { BacklogService } from "../core/services/backlog.service";
 import { PtItem } from "../core/models/domain";
 import { PresetType } from "../core/models/domain/types";
 import { BehaviorSubject } from "rxjs";
