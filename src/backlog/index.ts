@@ -3,17 +3,30 @@
 import './backlog.css';
 
 import $ from "jquery";
+import "bootstrap/dist/js/bootstrap";
 
 import { PtItem } from "../core/models/domain";
 import { ItemType } from "../core/constants";
 import { getIndicatorClass } from "../shared/helpers/priority-styling";
 import { BacklogPage } from './backlog.page';
-import { PresetType } from '../core/models/domain/types';
+import { PresetType, PtItemType } from '../core/models/domain/types';
 import { pushUrl, getQueryParameter } from '../utils/url';
-
+import { PtNewItem } from '../shared/models/dto/pt-new-item';
 
 const reqPreset = getQueryParameter('preset') as PresetType;
 const backlogPage = new BacklogPage(reqPreset);
+
+backlogPage.items$.subscribe(items => {
+    $('#itemsTableBody').html(renderTableRows(items));
+});
+
+const newItemTypeSelectObj = $('#newItemType');
+$.each(backlogPage.itemTypesProvider, (key, value) => {
+    newItemTypeSelectObj.append($("<option></option>")
+        .attr("value", value)
+        .text(value));
+});
+
 function getIndicatorImage(item: PtItem) {
     return ItemType.imageResFromType(item.type);
 }
@@ -35,19 +48,32 @@ function renderTableRow(item: PtItem): string {
     `;
 }
 
+/*
 function refreshBacklogPage() {
     backlogPage.refresh()
         .then(items => {
             $('#itemsTableBody').html(renderTableRows(items));
         });
 }
+*/
 
 $('.btn-backlog-filter').click((e) => {
-    //debugger;
     const selPreset = $(e.currentTarget).attr('data-preset') as PresetType;
     pushUrl('', 'backlog/backlog.html', '?preset=' + selPreset);
     backlogPage.currentPreset = selPreset;
-    refreshBacklogPage();
+    backlogPage.refresh();
+});
+
+$('#btnAddItemSave').click(() => {
+    const newTitle = $('#newItemTitle').val() as string;
+    const newDescription = $('#newItemDescription').val() as string;
+    const newItemType = $('#newItemType').val() as PtItemType;
+    const newItem: PtNewItem = {
+        title: newTitle,
+        description: newDescription,
+        typeStr: newItemType
+    };
+    backlogPage.onAddSave(newItem);
 });
 
 $(document).on("click", "#itemsTableBody tr", (e) => {
@@ -55,6 +81,5 @@ $(document).on("click", "#itemsTableBody tr", (e) => {
     console.log(itemId);
 });
 
-refreshBacklogPage();
-
+backlogPage.refresh();
 
