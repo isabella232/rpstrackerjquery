@@ -1,19 +1,25 @@
+
+
+import './styles.css';
+import 'kendo-ui-core/css/web/kendo.common.css';
+import 'kendo-ui-core/css/web/kendo.default.min.css';
+
+
+
 //import * as _ from 'lodash';
 import $ from "jquery";
 //import 'kendo-ui';
 
-import './styles.css';
-import "@progress/kendo-ui/js/kendo.datepicker.js";
+import "@progress/kendo-ui/js/kendo.datepicker";
 
-import '@progress/kendo-ui';
+//import '@progress/kendo-ui';
 //import '@progress/kendo-ui/css/common';
 
-import 'kendo-ui-core/css/web/kendo.common.css';
-import 'kendo-ui-core/css/web/kendo.default.min.css';
 
-import * as sdf from './detail/detail';
 
-const df = new sdf.DetailPage();
+//import * as sdf from './detail/detail';
+
+//const df = new sdf.DetailPage();
 
 /*
 function component() {
@@ -28,8 +34,8 @@ function component() {
 document.body.appendChild(component());
 */
 
-$(() => {
-    $('#inDate').kendoDatePicker();
-    console.log('loaded2');
-    //window.location.href = '/backlog/backlog.html';
-});
+//$(() => {
+$('#inDate').kendoDatePicker();
+console.log('loaded2');
+window.location.href = '/backlog/backlog.html?preset=open';
+//});

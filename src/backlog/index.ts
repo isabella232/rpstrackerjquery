@@ -1,60 +1,19 @@
-//import * as _ from 'lodash';
-import $ from "jquery";
-//import 'kendo-ui';
-//import 'rxjs';
-
-//import "@progress/kendo-ui/js/kendo.datepicker.js";
-
-import '@progress/kendo-ui';
-//import '@progress/kendo-ui/css/common';
-
-import 'kendo-ui-core/css/web/kendo.common.css';
-import 'kendo-ui-core/css/web/kendo.default.min.css';
-
+//import 'kendo-ui-core/css/web/kendo.common.css';
+//import 'kendo-ui-core/css/web/kendo.default.min.css';
 import './backlog.css';
 
+import $ from "jquery";
 
-import { Store } from "../core/state/app-store";
-import { BacklogRepository } from "./backlog.repository";
-import { BacklogService } from "./backlog.service";
 import { PtItem } from "../core/models/domain";
-import { PresetType } from "../core/models/domain/types";
 import { ItemType } from "../core/constants";
 import { getIndicatorClass } from "../shared/helpers/priority-styling";
+import { BacklogPage } from './backlog.page';
+import { PresetType } from '../core/models/domain/types';
+import { pushUrl, getQueryParameter } from '../utils/url';
 
 
-/*
-function component() {
-    let element = document.createElement('div');
-
-    // Lodash, currently included via a script, is required for this line to work
-    element.innerHTML = _.join(['Hello', 'webpack4 3'], ' ');
-
-    return element;
-}
-
-document.body.appendChild(component());
-*/
-
-export class BacklogPage {
-    private store: Store = new Store();
-    private backlogRepo: BacklogRepository = new BacklogRepository();
-    private backlogService: BacklogService = new BacklogService(this.backlogRepo, this.store);
-
-    public items: PtItem[] = [];
-    public currentPreset: PresetType = 'open';
-
-
-    public refresh(): Promise<PtItem[]> {
-        return this.backlogService.getItems(this.currentPreset)
-            .then(ptItems => {
-                this.items = ptItems;
-                return ptItems;
-            });
-    }
-}
-
-const backlogPage = new BacklogPage();
+const reqPreset = getQueryParameter('preset') as PresetType;
+const backlogPage = new BacklogPage(reqPreset);
 function getIndicatorImage(item: PtItem) {
     return ItemType.imageResFromType(item.type);
 }
@@ -76,15 +35,26 @@ function renderTableRow(item: PtItem): string {
     `;
 }
 
-$(() => {
-    $(document).on("click", "#itemsTableBody tr", (e) => {
-        const itemId = $(e.currentTarget).attr('data-id');
-        console.log(itemId);
-    });
-
+function refreshBacklogPage() {
     backlogPage.refresh()
         .then(items => {
             $('#itemsTableBody').html(renderTableRows(items));
         });
+}
 
+$('.btn-backlog-filter').click((e) => {
+    //debugger;
+    const selPreset = $(e.currentTarget).attr('data-preset') as PresetType;
+    pushUrl('', 'backlog/backlog.html', '?preset=' + selPreset);
+    backlogPage.currentPreset = selPreset;
+    refreshBacklogPage();
 });
+
+$(document).on("click", "#itemsTableBody tr", (e) => {
+    const itemId = $(e.currentTarget).attr('data-id');
+    console.log(itemId);
+});
+
+refreshBacklogPage();
+
+
