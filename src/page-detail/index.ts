@@ -11,12 +11,108 @@ import { DetailScreenType } from "../shared/models/ui/types/detail-screens";
 import { DetailPage } from "./detail.page";
 
 const reqScreen = getQueryParameter('screen') as DetailScreenType;
-const detailPage = new DetailPage(reqScreen);
+const reqItemId = Number(getQueryParameter('itemId'));
+const detailPage = new DetailPage(reqScreen, reqItemId);
 
-const detailsTemplate = $('#detailsTemplate').html();
 
-const x = detailsTemplate.replace(/{{title}}/ig, detailPage.detalsForm.title);
-$('#detailScreenContainer').append(x);
+detailPage.item$.subscribe(item => {
+    if (item) {
+        renderPageChanges();
+        switch (detailPage.currentScreen) {
+            case 'details':
+                renderScreenDetails();
+                break;
+            case 'tasks':
+                renderScreenTasks();
+                break;
+            case 'chitchat':
+                renderScreenChitchat();
+                break;
+        }
+    }
+});
+
+$(document).on('keyup', '.pt-text-field', (e) => {
+    //update form model/
+    const fieldObj = $(e.currentTarget);
+    const formFieldName = fieldObj.attr('name');
+    (detailPage.itemForm as any)[formFieldName] = fieldObj.val();
+});
+
+$(document).on('blur', '.pt-text-field', (e) => {
+    //save changes
+    detailPage.notifyUpdateItem();
+});
+
+function renderPageChanges() {
+    $('#itemTitle').text(detailPage.itemForm.title);
+}
+
+function onFieldChange(e: any) {
+    const fieldObj = $(e.currentTarget);
+    const fieldName = fieldObj.attr('name');
+    (detailPage.itemForm as any)[fieldName] = fieldObj.val();
+}
+
+function onNonTextFieldChange(e: any) {
+    onFieldChange(e);
+    detailPage.notifyUpdateItem();
+}
+
+function renderScreenDetails() {
+    const detailsTemplate = $('#detailsTemplate').html();
+    const renderedHtml = detailsTemplate
+        .replace(/{{title}}/ig, detailPage.itemForm.title)
+        .replace(/{{description}}/ig, detailPage.itemForm.description);
+    $('#detailScreenContainer').html(renderedHtml);
+
+    const selectItemTypeObj = $('#selItemType');
+    $.each(detailPage.itemTypesProvider, (key, value) => {
+        selectItemTypeObj.append($("<option></option>")
+            .attr("value", value)
+            .text(value));
+    });
+    selectItemTypeObj
+        .val(detailPage.itemForm.typeStr)
+        .change(onNonTextFieldChange);
+
+    const selectStatusObj = $('#selStatus');
+    $.each(detailPage.statusesProvider, (key, value) => {
+        selectStatusObj.append($("<option></option>")
+            .attr("value", value)
+            .text(value));
+    });
+    selectStatusObj
+        .val(detailPage.itemForm.statusStr)
+        .change(onNonTextFieldChange);
+
+    const selectPriorityObj = $('#selPriority');
+    $.each(detailPage.prioritiesProvider, (key, value) => {
+        selectPriorityObj.append($("<option></option>")
+            .attr("value", value)
+            .text(value));
+    });
+    selectPriorityObj
+        .val(detailPage.itemForm.priorityStr)
+        .change(onNonTextFieldChange);
+
+    const inputEstimateObj = $('#inputEstimate');
+    inputEstimateObj
+        .val(detailPage.itemForm.estimate)
+        .change(onNonTextFieldChange);
+
+}
+
+function renderScreenTasks() {
+
+}
+
+function renderScreenChitchat() {
+
+}
+
+detailPage.refresh();
+
 
 /*
 backlogPage.items$.subscribe(items => {

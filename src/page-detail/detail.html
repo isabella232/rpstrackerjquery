@@ -178,13 +178,12 @@
                 </div>
             </nav>
 
-
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
 
                 <div>
                     <div
                         class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
-                        <h1 class="h2">{item.title}</h1>
+                        <h1 class="h2" id="itemTitle"></h1>
                         <div class="btn-toolbar mb-2 mb-md-0">
                             <div class="btn-group mr-2">
                                 <button type="button">Details</button>
@@ -196,19 +195,73 @@
                         </div>
                     </div>
 
-                    <div id="detailScreenContainer"></div>
+
 
                 </div>
 
-
+                <div id="detailScreenContainer"></div>
             </main>
         </div>
     </div>
 
     <script id="detailsTemplate" type="text/template">
-        <div class="tutorial">
-            <h1 class="tutorial-heading">{{title}}<h1>
-        </div>
+        <form>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Title</label>
+                <div class="col-sm-10">
+                    <input class="form-control pt-text-field" name="title" value="{{title}}" />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Description</label>
+                <div class="col-sm-10">
+                    <textarea class="form-control pt-text-field" name="description">{{description}}</textarea>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Item Type</label>
+                <div class="col-sm-10">
+                    <select id="selItemType" class="form-control" name="typeStr">
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Status</label>
+                <div class="col-sm-10">
+                    <select id="selStatus" class="form-control" name="statusStr">
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Estimate</label>
+                <div class="col-sm-10">
+                    <input id="inputEstimate" class="form-control" type="range" step="1" min="0" max="20" name="estimate"  />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Priority</label>
+                <div class="col-sm-10">
+                    <select id="selPriority" class="form-control" name="priorityStr">
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Assignee</label>
+
+                <div class="col-sm-10">
+                    <img  class="li-avatar rounded" />
+                    <span>Assignee Name</span>
+
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Pick assignee</button>
+                </div>
+            </div>
+        </form>
     </script>
 
 

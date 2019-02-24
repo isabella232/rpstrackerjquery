@@ -78,7 +78,7 @@ $('#btnAddItemSave').click(() => {
 
 $(document).on("click", "#itemsTableBody tr", (e) => {
     const itemId = $(e.currentTarget).attr('data-id');
-    console.log(itemId);
+    window.location.href = `/page-detail/detail.html?screen=details&itemId=${itemId}`;
 });
 
 backlogPage.refresh();
