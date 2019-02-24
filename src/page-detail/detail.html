@@ -204,6 +204,26 @@
         </div>
     </div>
 
+    <div class="modal fade" id="assigneeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalLabel">Select Assignee</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <ul id="listAssignees" class="list-group list-group-flush">
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script id="detailsTemplate" type="text/template">
         <form>
             <div class="form-group row">
@@ -255,10 +275,12 @@
                 <label class="col-sm-2 col-form-label">Assignee</label>
 
                 <div class="col-sm-10">
-                    <img  class="li-avatar rounded" />
-                    <span>Assignee Name</span>
+                    <img id="imgAssigneeAvatar" class="li-avatar rounded" />
+                    <span>{{assigneeName}}</span>
 
-                    <button type="button" class="btn btn-sm btn-outline-secondary">Pick assignee</button>
+                    <button type="button" id="btnAssigneeModal" class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#assigneeModal">
+                            Pick assignee
+                        </button>
                 </div>
             </div>
         </form>
