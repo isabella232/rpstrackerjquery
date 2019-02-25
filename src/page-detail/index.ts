@@ -58,6 +58,13 @@ $(document).on('click', '.pt-assignee-item', (e) => {
     detailPage.selectUserById(selUserId);
 });
 
+$('.btn-screen-switch').click((e) => {
+    const selScreen = $(e.currentTarget).attr('data-screen') as DetailScreenType;
+    pushUrl('', 'page-detail/detail.html', `?screen=${selScreen}&itemId=${detailPage.itemId}`);
+    detailPage.currentScreen = selScreen;
+    detailPage.refresh();
+});
+
 function renderPageChanges() {
     $('#itemTitle').text(detailPage.itemForm.title);
 }
@@ -117,17 +124,26 @@ function renderScreenDetails() {
     inputEstimateObj
         .val(detailPage.itemForm.estimate)
         .change(onNonTextFieldChange);
-
-
-
 }
 
 function renderScreenTasks() {
+    const tasksTemplate = $('#tasksTemplate').html();
+    const renderedHtml = tasksTemplate
+        .replace(/{{title}}/ig, detailPage.itemForm.title)
+        .replace(/{{description}}/ig, detailPage.itemForm.description)
+        .replace(/{{assigneeName}}/ig, detailPage.itemForm.assigneeName);
 
+    $('#detailScreenContainer').html(renderedHtml);
 }
 
 function renderScreenChitchat() {
+    const chitchatTemplate = $('#chitchatTemplate').html();
+    const renderedHtml = chitchatTemplate
+        .replace(/{{title}}/ig, detailPage.itemForm.title)
+        .replace(/{{description}}/ig, detailPage.itemForm.description)
+        .replace(/{{assigneeName}}/ig, detailPage.itemForm.assigneeName);
 
+    $('#detailScreenContainer').html(renderedHtml);
 }
 
 function renderAssignees(users: PtUser[]) {

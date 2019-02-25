@@ -186,11 +186,11 @@
                         <h1 class="h2" id="itemTitle"></h1>
                         <div class="btn-toolbar mb-2 mb-md-0">
                             <div class="btn-group mr-2">
-                                <button type="button">Details</button>
+                                <button type="button" class="btn-screen-switch" data-screen="details">Details</button>
 
-                                <button type="button">Tasks</button>
+                                <button type="button" class="btn-screen-switch" data-screen="tasks">Tasks</button>
 
-                                <button type="button">Chitchat</button>
+                                <button type="button" class="btn-screen-switch" data-screen="chitchat">Chitchat</button>
                             </div>
                         </div>
                     </div>
@@ -286,6 +286,13 @@
         </form>
     </script>
 
+    <script id="tasksTemplate" type="text/template">
+       <h1>Tasks</h1>
+    </script>
+
+    <script id="chitchatTemplate" type="text/template">
+        <h1>Chitchat</h1>
+     </script>
 
     <script src="/vendor.bundle.js"></script>
     <script src="/detail.bundle.js"></script>
