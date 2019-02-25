@@ -9,6 +9,8 @@ import { renderScreenDetails } from "./screens/details-screen";
 import { PtItemDetailsScreenProps, DetailsScreenModel } from "./screens/details-screen-model";
 import { PtItemTasksScreenProps, TasksScreenModel } from "./screens/tasks-screen-model";
 import { renderScreenTasks } from "./screens/tasks-screen";
+import { PtItemChitchatScreenProps, ChitchatScreenModel } from "./screens/chitchat-screen-model";
+import { renderScreenChitchat } from "./screens/chitchat-screen";
 
 const reqScreen = getQueryParameter('screen') as DetailScreenType;
 const reqItemId = Number(getQueryParameter('itemId'));
@@ -39,6 +41,18 @@ function createScreenTasks(detailPageModel: DetailPageModel) {
     renderScreenTasks(tasksScreenModel);
 }
 
+function createScreenChitchat(detailPageModel: DetailPageModel) {
+    const modelProps: PtItemChitchatScreenProps = {
+        comments$: detailPageModel.comments$,
+        currentUser: detailPageModel.currentUser,
+        addNewComment: (newComment) => detailPageModel.onAddNewComment(newComment)
+    };
+
+    const chitchatScreenModel: ChitchatScreenModel = new ChitchatScreenModel(modelProps);
+
+    renderScreenChitchat(chitchatScreenModel);
+}
+
 detailPageModel.item$.subscribe(item => {
     if (item) {
         renderPageChanges(item);
@@ -50,8 +64,10 @@ detailPageModel.item$.subscribe(item => {
                 createScreenTasks(detailPageModel);
                 break;
             case 'chitchat':
-                //renderScreenChitchat(detailPageModel);
+                createScreenChitchat(detailPageModel);
                 break;
+            default:
+                createScreenDetails(detailPageModel);
         }
     }
 });

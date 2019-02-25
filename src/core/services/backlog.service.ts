@@ -3,7 +3,7 @@ import { CONFIG } from '../../config';
 import { Store } from '../../core/state/app-store';
 import { PresetType } from '../../core/models/domain/types';
 import { PtItem, PtUser, PtTask, PtComment } from '../../core/models/domain';
-import { datesForPtItem, datesForTask } from '../../core/helpers/date-utils';
+import { datesForPtItem, datesForTask, datesForComment } from '../../core/helpers/date-utils';
 import { PriorityEnum, StatusEnum } from '../../core/models/domain/enums';
 import { PtNewItem } from '../../shared/models/dto/pt-new-item';
 import { PtNewTask } from '../../shared/models/dto/pt-new-task';
@@ -59,7 +59,10 @@ export class BacklogService {
             .then((ptItem: PtItem) => {
                 datesForPtItem(ptItem);
                 this.setUserAvatarUrl(ptItem.assignee);
-                ptItem.comments.forEach(c => this.setUserAvatarUrl(c.user));
+                ptItem.comments.forEach(c => {
+                    this.setUserAvatarUrl(c.user);
+                    datesForComment(c);
+                });
                 ptItem.tasks.forEach(t => datesForTask(t));
                 return ptItem;
             });
@@ -87,6 +90,7 @@ export class BacklogService {
                     this.setUserAvatar(nextItem.assignee);
 
                     nextItem.tasks.forEach(t => datesForTask(t));
+                    nextItem.comments.forEach(c => datesForComment(c));
                     resolve(nextItem);
                 });
         });
@@ -170,6 +174,7 @@ export class BacklogService {
                 currentItem.id
             )
                 .then((nextComment: PtComment) => {
+                    datesForComment(nextComment);
                     resolve(nextComment);
                 }
                 );

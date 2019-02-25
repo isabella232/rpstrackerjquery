@@ -39,24 +39,6 @@ $(document).on('blur', '#inputNewTaskTitle', (e) => {
         tasksScreenModel.onTaskUpdateRequested(taskId, newValue);
     });
 
-/*
-$(document).on('click', '.pt-assignee-item', (e) => {
-    const selUserId = Number($(e.currentTarget).attr('data-user-id'));
-    tasksScreenModel.selectUserById(selUserId);
-});
-
-function onFieldChange(e: any) {
-    const fieldObj = $(e.currentTarget);
-    const fieldName = fieldObj.attr('name');
-    (tasksScreenModel.itemForm as any)[fieldName] = fieldObj.val();
-}
-
-function onNonTextFieldChange(e: any) {
-    onFieldChange(e);
-    tasksScreenModel.notifyUpdateItem();
-}
-*/
-
 export function renderScreenTasks(model: TasksScreenModel) {
     tasksScreenModel = model;
 
