@@ -8,13 +8,13 @@ import "bootstrap/dist/js/bootstrap";
 import { PtItem } from "../core/models/domain";
 import { ItemType } from "../core/constants";
 import { getIndicatorClass } from "../shared/helpers/priority-styling";
-import { BacklogPage } from './backlog.page';
+import { BacklogPageModel } from './backlog-page-model';
 import { PresetType, PtItemType } from '../core/models/domain/types';
 import { pushUrl, getQueryParameter } from '../utils/url';
 import { PtNewItem } from '../shared/models/dto/pt-new-item';
 
 const reqPreset = getQueryParameter('preset') as PresetType;
-const backlogPage = new BacklogPage(reqPreset);
+const backlogPage = new BacklogPageModel(reqPreset);
 
 backlogPage.items$.subscribe(items => {
     $('#itemsTableBody').html(renderTableRows(items));

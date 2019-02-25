@@ -7,7 +7,7 @@ import { BehaviorSubject } from "rxjs";
 import { PtNewItem } from "../shared/models/dto/pt-new-item";
 import { ItemType } from "../core/constants";
 
-export class BacklogPage {
+export class BacklogPageModel {
     private store: Store = new Store();
     private backlogRepo: BacklogRepository = new BacklogRepository();
     private backlogService: BacklogService = new BacklogService(this.backlogRepo, this.store);
