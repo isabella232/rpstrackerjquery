@@ -3,9 +3,7 @@ import $ from "jquery";
 import { PtTask } from "../../core/models/domain";
 import { TasksScreenModel } from "./tasks-screen-model";
 
-
 let tasksScreenModel: TasksScreenModel = undefined;
-
 
 $(document).on('blur', '#inputNewTaskTitle', (e) => {
     //save changes
@@ -41,60 +39,14 @@ $(document).on('blur', '#inputNewTaskTitle', (e) => {
 
 export function renderScreenTasks(model: TasksScreenModel) {
     tasksScreenModel = model;
-
     tasksScreenModel.props.tasks$.subscribe((tasks: PtTask[]) => {
         if (tasks.length > 0) {
             renderTasks(tasks);
         }
     });
-
     const tasksTemplate = $('#tasksTemplate').html();
-
     const renderedHtml = tasksTemplate;
-    //.replace(/{{title}}/ig, tasksScreenModel.itemForm.title)
-    //.replace(/{{description}}/ig, tasksScreenModel.itemForm.description)
-    //.replace(/{{assigneeName}}/ig, tasksScreenModel.itemForm.assigneeName);
-
     $('#detailScreenContainer').html(renderedHtml);
-
-    /*
-    $('#imgAssigneeAvatar').attr('src', tasksScreenModel.selectedAssignee.avatar);
-
-    const selectItemTypeObj = $('#selItemType');
-    $.each(tasksScreenModel.itemTypesProvider, (key, value) => {
-        selectItemTypeObj.append($("<option></option>")
-            .attr("value", value)
-            .text(value));
-    });
-    selectItemTypeObj
-        .val(tasksScreenModel.itemForm.typeStr)
-        .change(onNonTextFieldChange);
-
-    const selectStatusObj = $('#selStatus');
-    $.each(tasksScreenModel.statusesProvider, (key, value) => {
-        selectStatusObj.append($("<option></option>")
-            .attr("value", value)
-            .text(value));
-    });
-    selectStatusObj
-        .val(tasksScreenModel.itemForm.statusStr)
-        .change(onNonTextFieldChange);
-
-    const selectPriorityObj = $('#selPriority');
-    $.each(tasksScreenModel.prioritiesProvider, (key, value) => {
-        selectPriorityObj.append($("<option></option>")
-            .attr("value", value)
-            .text(value));
-    });
-    selectPriorityObj
-        .val(tasksScreenModel.itemForm.priorityStr)
-        .change(onNonTextFieldChange);
-
-    const inputEstimateObj = $('#inputEstimate');
-    inputEstimateObj
-        .val(tasksScreenModel.itemForm.estimate)
-        .change(onNonTextFieldChange);
-        */
 }
 
 

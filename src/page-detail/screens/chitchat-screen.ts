@@ -35,53 +35,9 @@ export function renderScreenChitchat(model: ChitchatScreenModel) {
     });
 
     const commentsTemplate = $('#chitchatTemplate').html();
-
     const renderedHtml = commentsTemplate;
-    //.replace(/{{title}}/ig, tasksScreenModel.itemForm.title)
-    //.replace(/{{description}}/ig, tasksScreenModel.itemForm.description)
-    //.replace(/{{assigneeName}}/ig, tasksScreenModel.itemForm.assigneeName);
-
     $('#detailScreenContainer').html(renderedHtml);
-
-
     $('#imgCurrentUserAvatar').attr('src', chitchatScreenModel.props.currentUser.avatar);
-
-    /*
-        const selectItemTypeObj = $('#selItemType');
-        $.each(tasksScreenModel.itemTypesProvider, (key, value) => {
-            selectItemTypeObj.append($("<option></option>")
-                .attr("value", value)
-                .text(value));
-        });
-        selectItemTypeObj
-            .val(tasksScreenModel.itemForm.typeStr)
-            .change(onNonTextFieldChange);
-    
-        const selectStatusObj = $('#selStatus');
-        $.each(tasksScreenModel.statusesProvider, (key, value) => {
-            selectStatusObj.append($("<option></option>")
-                .attr("value", value)
-                .text(value));
-        });
-        selectStatusObj
-            .val(tasksScreenModel.itemForm.statusStr)
-            .change(onNonTextFieldChange);
-    
-        const selectPriorityObj = $('#selPriority');
-        $.each(tasksScreenModel.prioritiesProvider, (key, value) => {
-            selectPriorityObj.append($("<option></option>")
-                .attr("value", value)
-                .text(value));
-        });
-        selectPriorityObj
-            .val(tasksScreenModel.itemForm.priorityStr)
-            .change(onNonTextFieldChange);
-    
-        const inputEstimateObj = $('#inputEstimate');
-        inputEstimateObj
-            .val(tasksScreenModel.itemForm.estimate)
-            .change(onNonTextFieldChange);
-            */
 }
 
 

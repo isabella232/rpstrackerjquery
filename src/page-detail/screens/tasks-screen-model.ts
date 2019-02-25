@@ -12,18 +12,9 @@ export interface PtItemTasksScreenProps {
 }
 
 export class TasksScreenModel {
-
-    //private lastUpdatedTitle = EMPTY_STRING;
     public newTaskTitle: string = EMPTY_STRING;
-    //public tasks: PtTask[] = [];
 
-    constructor(public props: PtItemTasksScreenProps) {
-        //this.props.tasks$.subscribe((tasks: PtTask[]) => {
-        //    debugger;
-        //    this.tasks = tasks;
-        //});
-    }
-
+    constructor(public props: PtItemTasksScreenProps) { }
 
     public onAddTapped() {
         const newTitle = this.newTaskTitle.trim();
@@ -47,46 +38,14 @@ export class TasksScreenModel {
         this.props.updateTask(taskUpdate);
     }
 
-    /*
-        public taskTitleChange(task: PtTask, event: any) {
-            if (task.title === event.target.value) {
-                return;
-            }
-            this.lastUpdatedTitle = event.target.value;
-        }
-        */
-
     public onTaskUpdateRequested(taskId: number, newTitle: string) {
         const taskUpdate: PtTaskUpdate = {
             task: this.getTaskById(taskId),
             toggle: false,
             newTitle: newTitle
         };
-
-        //this.lastUpdatedTitle = EMPTY_STRING;
         this.props.updateTask(taskUpdate);
     }
-
-    /*
-        public onTaskFocused(task: PtTask) {
-            this.lastUpdatedTitle = task.title ? task.title : EMPTY_STRING;
-        }
-    
-        public onTaskBlurred(task: PtTask) {
-            if (task.title === this.lastUpdatedTitle) {
-                return;
-            }
-            const taskUpdate: PtTaskUpdate = {
-                task: task,
-                toggle: false,
-                newTitle: this.lastUpdatedTitle
-            };
-    
-            this.lastUpdatedTitle = EMPTY_STRING;
-            this.props.updateTask(taskUpdate);
-        }
-    
-        */
 
     public taskDelete(taskId: number) {
         const taskUpdate: PtTaskUpdate = {
