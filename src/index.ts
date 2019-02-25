@@ -37,5 +37,5 @@ document.body.appendChild(component());
 //$(() => {
 $('#inDate').kendoDatePicker();
 console.log('loaded2');
-window.location.href = '/page-backlog/backlog.html?preset=open';
+window.location.href = '/page-dashboard/dashboard.html';
 //});

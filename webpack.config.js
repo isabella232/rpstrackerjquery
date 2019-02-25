@@ -7,6 +7,7 @@ module.exports = {
     mode: 'development',
     entry: {
         index: './src/index.ts',
+        dashboard: './src/page-dashboard/index.ts',
         backlog: './src/page-backlog/index.ts',
         detail: './src/page-detail/index.ts'
     },
@@ -45,6 +46,11 @@ module.exports = {
         ]
     },
     plugins: [
+        new CopyWebpackPlugin([
+            { from: 'src/page-dashboard/**', to: 'page-dashboard/', flatten: true },
+        ],
+            { ignore: ['**/*.js', '**/*.css', '**/*.ts'] }
+        ),
         new CopyWebpackPlugin([
             { from: 'src/page-backlog/**', to: 'page-backlog/', flatten: true },
         ],

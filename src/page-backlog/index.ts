@@ -14,14 +14,14 @@ import { pushUrl, getQueryParameter } from '../utils/url';
 import { PtNewItem } from '../shared/models/dto/pt-new-item';
 
 const reqPreset = getQueryParameter('preset') as PresetType;
-const backlogPage = new BacklogPageModel(reqPreset);
+const backlogPageModel = new BacklogPageModel(reqPreset);
 
-backlogPage.items$.subscribe(items => {
+backlogPageModel.items$.subscribe(items => {
     $('#itemsTableBody').html(renderTableRows(items));
 });
 
 const newItemTypeSelectObj = $('#newItemType');
-$.each(backlogPage.itemTypesProvider, (key, value) => {
+$.each(backlogPageModel.itemTypesProvider, (key, value) => {
     newItemTypeSelectObj.append($("<option></option>")
         .attr("value", value)
         .text(value));
@@ -60,8 +60,8 @@ function refreshBacklogPage() {
 $('.btn-backlog-filter').click((e) => {
     const selPreset = $(e.currentTarget).attr('data-preset') as PresetType;
     pushUrl('', 'page-backlog/backlog.html', '?preset=' + selPreset);
-    backlogPage.currentPreset = selPreset;
-    backlogPage.refresh();
+    backlogPageModel.currentPreset = selPreset;
+    backlogPageModel.refresh();
 });
 
 $('#btnAddItemSave').click(() => {
@@ -73,7 +73,7 @@ $('#btnAddItemSave').click(() => {
         description: newDescription,
         typeStr: newItemType
     };
-    backlogPage.onAddSave(newItem);
+    backlogPageModel.onAddSave(newItem);
 });
 
 $(document).on("click", "#itemsTableBody tr", (e) => {
@@ -81,5 +81,5 @@ $(document).on("click", "#itemsTableBody tr", (e) => {
     window.location.href = `/page-detail/detail.html?screen=details&itemId=${itemId}`;
 });
 
-backlogPage.refresh();
+backlogPageModel.refresh();
 
