@@ -39,6 +39,13 @@ function onNonTextFieldChange(e: any) {
 
 export function renderScreenDetails(model: DetailsScreenModel) {
     detailsScreenModel = model;
+
+    detailsScreenModel.props.users$.subscribe((users: PtUser[]) => {
+        if (users.length > 0) {
+            renderAssignees(users);
+        }
+    });
+
     const detailsTemplate = $('#detailsTemplate').html();
     const renderedHtml = detailsTemplate
         .replace(/{{title}}/ig, detailsScreenModel.itemForm.title)

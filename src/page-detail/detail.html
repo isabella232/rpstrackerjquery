@@ -287,7 +287,20 @@
     </script>
 
     <script id="tasksTemplate" type="text/template">
-       <h1>Tasks</h1>
+        <form>
+            <div class="form-row align-items-center">
+                <div class="col-sm-6">
+                    <input id="inputNewTaskTitle" placeholder="Enter new task..." class="form-control pt-text-task-add"
+                        name="newTask" />
+                </div>
+                <button id="btnTaskAdd" type="button" disabled class="btn btn-primary">Add</button>
+            </div>
+        
+            <hr />
+        
+            <div id="listTasks"></div>
+        </form>
+        
     </script>
 
     <script id="chitchatTemplate" type="text/template">

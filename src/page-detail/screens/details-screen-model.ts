@@ -22,7 +22,7 @@ export class DetailsScreenModel {
     public selectedAssignee: PtUser | undefined;
     private users: PtUser[] = [];
 
-    constructor(private props: PtItemDetailsScreenProps) {
+    constructor(public props: PtItemDetailsScreenProps) {
         this.itemForm = ptItemToFormModel(this.props.item);
         this.selectedAssignee = this.props.item.assignee;
         this.props.users$.subscribe(users => this.users = users);
