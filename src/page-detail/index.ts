@@ -1,137 +1,72 @@
 import $ from "jquery";
 import "bootstrap/dist/js/bootstrap";
 
-import { PtItem, PtUser } from "../core/models/domain";
-import { ItemType } from "../core/constants";
-import { getIndicatorClass } from "../shared/helpers/priority-styling";
-import { PresetType, PtItemType } from '../core/models/domain/types';
+import { PtUser, PtItem } from "../core/models/domain";
 import { pushUrl, getQueryParameter } from '../utils/url';
-import { PtNewItem } from '../shared/models/dto/pt-new-item';
 import { DetailScreenType } from "../shared/models/ui/types/detail-screens";
-import { DetailPage } from "./detail.page";
+import { DetailPageModel } from "./detail-page-model";
+import { renderAssignees, renderScreenDetails } from "./screens/details-screen";
+import { PtItemDetailsScreenProps, DetailsScreenModel } from "./screens/details-screen-model";
 
 const reqScreen = getQueryParameter('screen') as DetailScreenType;
 const reqItemId = Number(getQueryParameter('itemId'));
-const detailPage = new DetailPage(reqScreen, reqItemId);
+const detailPageModel = new DetailPageModel(reqScreen, reqItemId);
 
-detailPage.item$.subscribe(item => {
+function createScreenDetails(detailPageModel: DetailPageModel) {
+    const modelProps: PtItemDetailsScreenProps = {
+        item: detailPageModel.item$.value,
+        users$: detailPageModel.users$,
+        itemSaved: (item) => detailPageModel.onItemSaved(item),
+        usersRequested: () => detailPageModel.onUsersRequested()
+    };
+
+    const detailsScreenModel: DetailsScreenModel = new DetailsScreenModel(modelProps);
+
+    renderScreenDetails(detailsScreenModel);
+}
+
+detailPageModel.item$.subscribe(item => {
     if (item) {
-        renderPageChanges();
-        switch (detailPage.currentScreen) {
+        renderPageChanges(item);
+        switch (detailPageModel.currentScreen) {
             case 'details':
-                renderScreenDetails();
+                createScreenDetails(detailPageModel);
                 break;
             case 'tasks':
-                renderScreenTasks();
+                //renderScreenTasks(detailPageModel);
                 break;
             case 'chitchat':
-                renderScreenChitchat();
+                //renderScreenChitchat(detailPageModel);
                 break;
         }
     }
 });
 
-detailPage.users$.subscribe((users: PtUser[]) => {
+detailPageModel.users$.subscribe((users: PtUser[]) => {
     if (users.length > 0) {
         renderAssignees(users);
     }
 });
 
-$(document).on('keyup', '.pt-text-field', (e) => {
-    //update form model/
-    const fieldObj = $(e.currentTarget);
-    const formFieldName = fieldObj.attr('name');
-    (detailPage.itemForm as any)[formFieldName] = fieldObj.val();
-});
-
-$(document).on('blur', '.pt-text-field', (e) => {
-    //save changes
-    detailPage.notifyUpdateItem();
-});
-
-$(document).on('click', '#btnAssigneeModal', () => {
-    detailPage.onUsersRequested();
-});
-
-$(document).on('click', '.pt-assignee-item', (e) => {
-    const selUserId = Number($(e.currentTarget).attr('data-user-id'));
-    detailPage.selectUserById(selUserId);
-});
 
 $('.btn-screen-switch').click((e) => {
     const selScreen = $(e.currentTarget).attr('data-screen') as DetailScreenType;
-    pushUrl('', 'page-detail/detail.html', `?screen=${selScreen}&itemId=${detailPage.itemId}`);
-    detailPage.currentScreen = selScreen;
-    detailPage.refresh();
+    pushUrl('', 'page-detail/detail.html', `?screen=${selScreen}&itemId=${detailPageModel.itemId}`);
+    detailPageModel.currentScreen = selScreen;
+    detailPageModel.refresh();
 });
 
-function renderPageChanges() {
-    $('#itemTitle').text(detailPage.itemForm.title);
+function renderPageChanges(item: PtItem) {
+    $('#itemTitle').text(item.title);
 }
 
-function onFieldChange(e: any) {
-    const fieldObj = $(e.currentTarget);
-    const fieldName = fieldObj.attr('name');
-    (detailPage.itemForm as any)[fieldName] = fieldObj.val();
-}
-
-function onNonTextFieldChange(e: any) {
-    onFieldChange(e);
-    detailPage.notifyUpdateItem();
-}
-
-function renderScreenDetails() {
-    const detailsTemplate = $('#detailsTemplate').html();
-    const renderedHtml = detailsTemplate
-        .replace(/{{title}}/ig, detailPage.itemForm.title)
-        .replace(/{{description}}/ig, detailPage.itemForm.description)
-        .replace(/{{assigneeName}}/ig, detailPage.itemForm.assigneeName);
-
-    $('#detailScreenContainer').html(renderedHtml);
-    $('#imgAssigneeAvatar').attr('src', detailPage.selectedAssignee.avatar);
-
-    const selectItemTypeObj = $('#selItemType');
-    $.each(detailPage.itemTypesProvider, (key, value) => {
-        selectItemTypeObj.append($("<option></option>")
-            .attr("value", value)
-            .text(value));
-    });
-    selectItemTypeObj
-        .val(detailPage.itemForm.typeStr)
-        .change(onNonTextFieldChange);
-
-    const selectStatusObj = $('#selStatus');
-    $.each(detailPage.statusesProvider, (key, value) => {
-        selectStatusObj.append($("<option></option>")
-            .attr("value", value)
-            .text(value));
-    });
-    selectStatusObj
-        .val(detailPage.itemForm.statusStr)
-        .change(onNonTextFieldChange);
-
-    const selectPriorityObj = $('#selPriority');
-    $.each(detailPage.prioritiesProvider, (key, value) => {
-        selectPriorityObj.append($("<option></option>")
-            .attr("value", value)
-            .text(value));
-    });
-    selectPriorityObj
-        .val(detailPage.itemForm.priorityStr)
-        .change(onNonTextFieldChange);
-
-    const inputEstimateObj = $('#inputEstimate');
-    inputEstimateObj
-        .val(detailPage.itemForm.estimate)
-        .change(onNonTextFieldChange);
-}
-
+/*
 function renderScreenTasks() {
     const tasksTemplate = $('#tasksTemplate').html();
     const renderedHtml = tasksTemplate
-        .replace(/{{title}}/ig, detailPage.itemForm.title)
-        .replace(/{{description}}/ig, detailPage.itemForm.description)
-        .replace(/{{assigneeName}}/ig, detailPage.itemForm.assigneeName);
+        .replace(/{{title}}/ig, detailPageModel.itemForm.title)
+        .replace(/{{description}}/ig, detailPageModel.itemForm.description)
+        .replace(/{{assigneeName}}/ig, detailPageModel.itemForm.assigneeName);
 
     $('#detailScreenContainer').html(renderedHtml);
 }
@@ -139,30 +74,16 @@ function renderScreenTasks() {
 function renderScreenChitchat() {
     const chitchatTemplate = $('#chitchatTemplate').html();
     const renderedHtml = chitchatTemplate
-        .replace(/{{title}}/ig, detailPage.itemForm.title)
-        .replace(/{{description}}/ig, detailPage.itemForm.description)
-        .replace(/{{assigneeName}}/ig, detailPage.itemForm.assigneeName);
+        .replace(/{{title}}/ig, detailPageModel.itemForm.title)
+        .replace(/{{description}}/ig, detailPageModel.itemForm.description)
+        .replace(/{{assigneeName}}/ig, detailPageModel.itemForm.assigneeName);
 
     $('#detailScreenContainer').html(renderedHtml);
 }
+*/
 
-function renderAssignees(users: PtUser[]) {
-    const listAssigneesObj = $('#listAssignees').empty();
-    $.each(users, (key, u) => {
-        listAssigneesObj.append($(
-            `
-            <li class="list-group-item d-flex justify-content-between align-items-center pt-assignee-item" data-user-id="${u.id}" data-dismiss="modal">
-                <span>${u.fullName}</span>
-                <span class="badge ">
-                    <img src="${u.avatar}" class="li-avatar rounded mx-auto d-block" />
-                </span>
-            </li>
-            `
-        ));
-    });
-}
 
-detailPage.refresh();
+detailPageModel.refresh();
 
 
 /*
