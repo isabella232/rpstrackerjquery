@@ -20,48 +20,13 @@ export class DetailsScreenModel {
     public statusesProvider = PT_ITEM_STATUSES;
     public prioritiesProvider = PT_ITEM_PRIORITIES;
     public selectedAssignee: PtUser | undefined;
-
-    //public currentUser: PtUser;
-    //public itemId: number = 0;
-    //public currentScreen: DetailScreenType = 'details';
-    //public item$: BehaviorSubject<PtItem> = new BehaviorSubject<PtItem>(null);
-    //public users$: Observable<PtUser[]> = this.store.select<PtUser[]>('users');
     private users: PtUser[] = [];
 
     constructor(private props: PtItemDetailsScreenProps) {
         this.itemForm = ptItemToFormModel(this.props.item);
         this.selectedAssignee = this.props.item.assignee;
-
-        //this.itemId = itemId;
-        //this.currentScreen = reqScreen;
-        //this.currentUser = this.store.value.currentUser;
-
-        /*
-        this.item$.subscribe(item => {
-            if (item) {
-                this.itemForm = ptItemToFormModel(item);
-                this.selectedAssignee = item.assignee;
-            }
-        });
-*/
-
-
         this.props.users$.subscribe(users => this.users = users);
-
     }
-
-    /*
-    public refresh() {
-        return this.backlogService.getPtItem(this.itemId)
-            .then(item => {
-                this.item$.next(item);
-                //this.tasks$.next(item.tasks);
-                //this.comments$.next(item.comments);
-
-
-            });
-    }
-    */
 
     public notifyUpdateItem() {
         if (!this.itemForm) {
