@@ -1,3 +1,5 @@
+import './details-screen.css';
+
 import $ from "jquery";
 import { PtUser } from "../../core/models/domain";
 import { DetailsScreenModel, PtItemDetailsScreenProps } from "./details-screen-model";
