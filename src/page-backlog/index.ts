@@ -1,6 +1,3 @@
-//import 'kendo-ui-core/css/web/kendo.common.css';
-//import 'kendo-ui-core/css/web/kendo.default.min.css';
-
 import "bootstrap/dist/css/bootstrap.css";
 import '../styles.css';
 import './backlog.css';
