@@ -28,10 +28,10 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "copy": "copyfiles -u 1 ./src/styles.css ./src/assets/**/*.* ./dist",
+    "copy": "copyfiles -u 1 ./src/styles.css ./src/index.html ./src/assets/**/*.* ./dist",
     "build": "webpack && npm run copy",
     "watch": "webpack --watch",
-    "start": "webpack-dev-server --open"
+    "start": "npm run copy && webpack-dev-server --open"
   },
   "author": "",
   "license": "ISC",
