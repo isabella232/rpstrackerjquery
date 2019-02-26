@@ -19,6 +19,12 @@ const reqScreen = getQueryParameter('screen') as DetailScreenType;
 const reqItemId = Number(getQueryParameter('itemId'));
 const detailPageModel = new DetailPageModel(reqScreen, reqItemId);
 
+function resetAllScreens() {
+    $("#detailsScreenContainer").empty();
+    $("#tasksScreenContainer").empty();
+    $("#chitchatScreenContainer").empty();
+}
+
 function createScreenDetails(detailPageModel: DetailPageModel) {
     const modelProps: PtItemDetailsScreenProps = {
         item: detailPageModel.item$.value,
@@ -59,6 +65,7 @@ function createScreenChitchat(detailPageModel: DetailPageModel) {
 detailPageModel.item$.subscribe(item => {
     if (item) {
         renderPageChanges(item);
+        resetAllScreens();
         switch (detailPageModel.currentScreen) {
             case 'details':
                 createScreenDetails(detailPageModel);
