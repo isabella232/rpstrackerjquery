@@ -1,10 +1,12 @@
 //import 'kendo-ui-core/css/web/kendo.common.css';
 //import 'kendo-ui-core/css/web/kendo.default.min.css';
 
+import "bootstrap/dist/css/bootstrap.css";
+import '../styles.css';
+import './active-issues.css';
+
 import $ from "jquery";
 import "bootstrap/dist/js/bootstrap";
-
-import './active-issues.css';
 
 import { DashboardPageModel } from './dashboard-page-model';
 
@@ -26,10 +28,13 @@ dashboardPageModel.statusCounts$.subscribe(results => {
     }
 });
 
-$('.pt-class-range-filter').click((e) => {
-    const range = Number($(e.currentTarget).attr('data-range'));
-    dashboardPageModel.onMonthRangeSelected(range);
+$(() => {
+    $('.pt-class-range-filter').click((e) => {
+        const range = Number($(e.currentTarget).attr('data-range'));
+        dashboardPageModel.onMonthRangeSelected(range);
+    });
 });
+
 
 dashboardPageModel.refresh();
 

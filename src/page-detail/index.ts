@@ -1,3 +1,6 @@
+import "bootstrap/dist/css/bootstrap.css";
+import '../styles.css';
+
 import $ from "jquery";
 import "bootstrap/dist/js/bootstrap";
 
@@ -72,12 +75,15 @@ detailPageModel.item$.subscribe(item => {
     }
 });
 
-$('.btn-screen-switch').click((e) => {
-    const selScreen = $(e.currentTarget).attr('data-screen') as DetailScreenType;
-    pushUrl('', 'page-detail/detail.html', `?screen=${selScreen}&itemId=${detailPageModel.itemId}`);
-    detailPageModel.currentScreen = selScreen;
-    detailPageModel.refresh();
+$(() => {
+    $('.btn-screen-switch').click((e) => {
+        const selScreen = $(e.currentTarget).attr('data-screen') as DetailScreenType;
+        pushUrl('', 'page-detail/detail.html', `?screen=${selScreen}&itemId=${detailPageModel.itemId}`);
+        detailPageModel.currentScreen = selScreen;
+        detailPageModel.refresh();
+    });
 });
+
 
 function renderPageChanges(item: PtItem) {
     $('#itemTitle').text(item.title);

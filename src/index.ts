@@ -1,8 +1,8 @@
 
-
+import './index.html';
 import './styles.css';
-import 'kendo-ui-core/css/web/kendo.common.css';
-import 'kendo-ui-core/css/web/kendo.default.min.css';
+//import 'kendo-ui-core/css/web/kendo.common.css';
+//import 'kendo-ui-core/css/web/kendo.default.min.css';
 
 
 

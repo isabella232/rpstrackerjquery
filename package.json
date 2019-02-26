@@ -15,6 +15,7 @@
     "@types/kendo-ui": "2019.1.0",
     "@types/lodash": "4.14.121",
     "copy-webpack-plugin": "^4.6.0",
+    "copyfiles": "^2.1.0",
     "css-loader": "2.1.0",
     "file-loader": "^3.0.1",
     "style-loader": "^0.23.1",
@@ -27,7 +28,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack",
+    "copy": "copyfiles -u 1 ./src/styles.css ./dist",
+    "build": "webpack && npm run copy",
     "watch": "webpack --watch",
     "start": "webpack-dev-server --open"
   },
